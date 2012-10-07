@@ -1,0 +1,3 @@
+Small shellscript to burn subtitles to a video file using ffmgeg (must have libass support).
+
+burn_subs.sh <invideo> <subtitles> <outvideo>
