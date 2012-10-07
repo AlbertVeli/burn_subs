@@ -22,7 +22,7 @@ ARATE=128k
 VID=$1
 SUB=$2
 ASS=/tmp/$$.ass
-O=$3
+OUT=$3
 
 clean_up()
 {
@@ -51,9 +51,9 @@ if ! test -f "$SUB"; then
     bail_out "could not read subtitlefile $SUB"
 fi
 
-if test "$O" = ""; then
-    O='out.avi'
-    echo "Warning: no output filename given, using $O"
+if test "$OUT" = ""; then
+    OUT='out.avi'
+    echo "Warning: no output filename given, using $OUT"
 fi
 
 HASASS=`$FFMPEG --version 2>&1 | grep libass`
@@ -62,6 +62,6 @@ if test "$HASASS" = ""; then
 fi
 
 $FFMPEG -v warning -y -i $SUB $ASS || bail_out "could not convert subtitlefile $SUB"
-$FFMPEG -v warning -y -i $VID -b:v $VRATE -vf "ass=$ASS" $THREADS  -ab $ARATE -ac 2 $O || bail_out "$O not completed"
-echo "$0 encoded successfully"
+$FFMPEG -v warning -y -i $VID -b:v $VRATE -vf "ass=$ASS" $THREADS  -ab $ARATE -ac 2 $OUT || bail_out "$OUT not completed"
+echo "$OUT encoded successfully"
 clean_up
