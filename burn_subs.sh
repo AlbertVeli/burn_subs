@@ -4,14 +4,14 @@
 FFMPEG=ffmpeg
 
 # Set number of threads
-# Comment out to disable threads
-THREADS='-threads 2'
+# Uncomment to enable threads (unsafe for xvid)
+#THREADS='-threads 2'
 
 # Video codec
 VCODEC='-vcodec mpeg4 -vtag xvid'
 
 # Video bitrate
-VRATE=1000000
+VRATE=999000
 
 # Audio bitrate
 ARATE=128k
