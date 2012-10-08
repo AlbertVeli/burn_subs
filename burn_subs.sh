@@ -7,11 +7,8 @@ FFMPEG=ffmpeg
 # Uncomment to enable threads (unsafe for xvid)
 #THREADS='-threads 2'
 
-# Video codec
-VCODEC='-vcodec mpeg4 -vtag xvid'
-
-# Video bitrate
-VRATE=999000
+# Video codec (xvid) and bitrate (990k)
+VCODEC='-c:v mpeg4 -tag:v xvid -b:v 990k'
 
 # Audio bitrate
 ARATE=128k
@@ -41,6 +38,13 @@ usage()
     echo "Usage: $0 <invideo> <subtitles> <outvideo>"
 }
 
+# Check that ffmpeg has libass support
+HASASS=`$FFMPEG --version 2>&1 | grep libass`
+if test "$HASASS" = ""; then
+    bail_out "enable libass support in ffmpeg and try again"
+fi
+
+# Check that input video and subtitle files exists
 if ! test -f "$VID"; then
     usage
     bail_out "could not read videofile $VID"
@@ -56,12 +60,13 @@ if test "$OUT" = ""; then
     echo "Warning: no output filename given, using $OUT"
 fi
 
-HASASS=`$FFMPEG --version 2>&1 | grep libass`
-if test "$HASASS" = ""; then
-    bail_out "enable libass support in ffmpeg and try again"
-fi
 
+# Convert subtitlefile to libass format
 $FFMPEG -v warning -y -i $SUB $ASS || bail_out "could not convert subtitlefile $SUB"
-$FFMPEG -v warning -y -i $VID -b:v $VRATE -vf "ass=$ASS" $THREADS -ab $ARATE -ac 2 $OUT || bail_out "$OUT not completed"
+
+# Encode video with subtitles
+$FFMPEG -v warning -y -i $VID $VCODEC -vf "ass=$ASS" $THREADS -b:a $ARATE -ac 2 $OUT || bail_out "$OUT not completed"
+
+# Done
 echo "$OUT encoded successfully"
 clean_up
