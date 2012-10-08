@@ -62,6 +62,6 @@ if test "$HASASS" = ""; then
 fi
 
 $FFMPEG -v warning -y -i $SUB $ASS || bail_out "could not convert subtitlefile $SUB"
-$FFMPEG -v warning -y -i $VID -b:v $VRATE -vf "ass=$ASS" $THREADS  -ab $ARATE -ac 2 $OUT || bail_out "$OUT not completed"
+$FFMPEG -v warning -y -i $VID -b:v $VRATE -vf "ass=$ASS" $THREADS -ab $ARATE -ac 2 $OUT || bail_out "$OUT not completed"
 echo "$OUT encoded successfully"
 clean_up

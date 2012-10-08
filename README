@@ -1,3 +1,14 @@
 Small shellscript to burn subtitles to a video file using ffmgeg (must have libass support).
 
-burn_subs.sh <invideo> <subtitles> <outvideo>
+Usage:
+
+ burn_subs.sh <invideo> <subtitles> <outvideo>
+
+
+To enable libass support in ffmpeg, compile from source and add:
+
+ --enable-libass
+
+to configure flags.
+
+In gentoo just add libass to ffmpeg USE flags.
